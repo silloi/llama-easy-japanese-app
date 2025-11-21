@@ -271,37 +271,10 @@ def main():
             ruby_html = format_text_with_ruby_html(st.session_state.translated_text)
             st.markdown(ruby_html, unsafe_allow_html=True)
 
-            # ダウンロード・コピーボタン
+            # ダウンロード・コピーボタン（2カラムレイアウト）
             st.divider()
 
-            # カッコ版セクション
-            st.markdown("**📄 テキスト版（カッコ付き振り仮名）**")
-            text_cols = st.columns(2)
-
-            with text_cols[0]:
-                # カッコ版のダウンロード
-                st.download_button(
-                    label="📥 ダウンロード",
-                    data=st.session_state.translated_text,
-                    file_name="yasashii_nihongo.txt",
-                    mime="text/plain",
-                    use_container_width=True
-                )
-
-            with text_cols[1]:
-                # カッコ版のコピー
-                create_copy_button(
-                    text=st.session_state.translated_text,
-                    button_id="copy_text",
-                    button_label="📋 コピー"
-                )
-
-            st.divider()
-
-            # HTML版セクション
-            st.markdown("**🏷️ HTML版（ルビタグ）**")
-            html_cols = st.columns(2)
-
+            # HTML版の準備
             ruby_html_download = convert_furigana_to_ruby(st.session_state.translated_text)
             html_content = f"""<!DOCTYPE html>
 <html lang="ja">
@@ -331,22 +304,47 @@ def main():
 </body>
 </html>"""
 
-            with html_cols[0]:
-                # HTML版のダウンロード
+            # 2カラムレイアウト
+            col_text, col_html = st.columns(2)
+
+            with col_text:
+                st.markdown("**📄 テキスト版**")
+                st.caption("カッコ付き振り仮名")
+
+                # コピーボタン（上）
+                create_copy_button(
+                    text=st.session_state.translated_text,
+                    button_id="copy_text",
+                    button_label="📋 コピー"
+                )
+
+                # ダウンロードボタン（下）
+                st.download_button(
+                    label="📥 ダウンロード",
+                    data=st.session_state.translated_text,
+                    file_name="yasashii_nihongo.txt",
+                    mime="text/plain",
+                    use_container_width=True
+                )
+
+            with col_html:
+                st.markdown("**🏷️ HTML版**")
+                st.caption("ルビタグ付き")
+
+                # コピーボタン（上）
+                create_copy_button(
+                    text=ruby_html_download,
+                    button_id="copy_html",
+                    button_label="📋 コピー"
+                )
+
+                # ダウンロードボタン（下）
                 st.download_button(
                     label="📥 ダウンロード",
                     data=html_content,
                     file_name="yasashii_nihongo.html",
                     mime="text/html",
                     use_container_width=True
-                )
-
-            with html_cols[1]:
-                # HTML版のコピー
-                create_copy_button(
-                    text=ruby_html_download,
-                    button_id="copy_html",
-                    button_label="📋 コピー"
                 )
         else:
             st.info("👈 左側でテキストを入力し、変換ボタンをクリックしてください")
