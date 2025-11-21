@@ -7,7 +7,7 @@
 DEMO_API_KEY = "gsk_YOUR_DEMO_KEY_HERE"  # ハッカソン用デモキー
 
 # Groq API設定
-MODEL_NAME = "llama-3.1-70b-versatile"
+MODEL_NAME = "llama-3.3-70b-versatile"
 TEMPERATURE = 0.3  # 安定性重視
 MAX_TOKENS = 1000
 

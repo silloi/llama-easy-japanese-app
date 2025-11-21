@@ -4,7 +4,7 @@
 
 ## 📋 概要
 
-**やさしい日本語**とは、日本語に不慣れな外国人にもわかりやすい日本語のことです。このツールは、Groq API + Llama 3.1を使用して、通常の日本語を自動的に「やさしい日本語」に変換します。
+**やさしい日本語**とは、日本語に不慣れな外国人にもわかりやすい日本語のことです。このツールは、Groq API + Llama 3.3を使用して、通常の日本語を自動的に「やさしい日本語」に変換します。
 
 ### 対象ユーザー
 - CEFR C1-2レベルの日本語学習者
@@ -13,7 +13,7 @@
 
 ### 主な機能
 - ✅ 文化庁ガイドラインに完全準拠
-- ✅ Groq API（Llama 3.1）による高速・高品質な変換
+- ✅ Groq API（Llama 3.3）による高速・高品質な変換
 - ✅ 5種類のサンプルテキスト（行政・医療・防災・雇用・住宅）
 - ✅ Before/After 2カラム表示で比較しやすい
 - ✅ シンプルで直感的なUI
@@ -57,6 +57,9 @@ GROQ_API_KEY=your_groq_api_key_here
 4. **アプリの起動**
 ```bash
 streamlit run app.py
+
+# uvを使用している場合
+uv run streamlit run app.py
 ```
 
 ブラウザで `http://localhost:8501` にアクセスしてください。
@@ -104,7 +107,7 @@ llama-easy-japanese-app/
 ## 🔧 技術スタック
 
 - **フロントエンド**: Streamlit
-- **LLMバックエンド**: Groq API（Llama 3.1 70B Versatile）
+- **LLMバックエンド**: Groq API（Llama 3.3 70B Versatile）
 - **言語**: Python 3.11+
 - **ガイドライン**: 文化庁「在留支援のためのやさしい日本語ガイドライン」
 
@@ -163,4 +166,4 @@ Llama Hackathon Project
 
 ---
 
-**Powered by Groq + Llama 3.1** 🚀
+**Powered by Groq + Llama 3.3** 🚀

@@ -5,10 +5,14 @@
 
 import streamlit as st
 import os
+from dotenv import load_dotenv
 from groq import Groq
 from typing import Optional
 import config
 from prompt_builder import build_system_message, build_user_message
+
+# 環境変数を読み込む
+load_dotenv()
 
 
 # ページ設定
@@ -238,7 +242,7 @@ def main():
     st.markdown("""
     <div style="text-align: center; color: #616161; font-size: 0.9rem;">
         文化庁「在留支援のためのやさしい日本語ガイドライン」準拠<br>
-        Llama Hackathon Project | Powered by Groq + Llama 3.1
+        Llama Hackathon Project | Powered by Groq + Llama 3.3
     </div>
     """, unsafe_allow_html=True)
 
