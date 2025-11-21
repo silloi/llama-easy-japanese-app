@@ -178,15 +178,7 @@ def main():
     with col1:
         st.subheader("📝 通常の日本語")
 
-        # テキスト入力エリア
-        input_text = st.text_area(
-            "変換したいテキストを入力してください",
-            height=300,
-            placeholder="ここに変換したい日本語を入力してください...",
-            key="input_text"
-        )
-
-        # サンプルボタン
+        # サンプルボタン（テキストエリアの前に配置）
         st.markdown("**📌 サンプルを試す:**")
         sample_cols = st.columns(5)
 
@@ -195,6 +187,18 @@ def main():
                 if st.button(category, key=f"sample_{category}", use_container_width=True):
                     st.session_state.input_text = sample_text
                     st.rerun()
+
+        # session_stateの初期化
+        if "input_text" not in st.session_state:
+            st.session_state.input_text = ""
+
+        # テキスト入力エリア
+        input_text = st.text_area(
+            "変換したいテキストを入力してください",
+            height=300,
+            placeholder="ここに変換したい日本語を入力してください...",
+            key="input_text"
+        )
 
         # 変換ボタン
         st.divider()
