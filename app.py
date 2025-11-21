@@ -95,9 +95,9 @@ def translate_to_yasashii(text: str, client: Groq) -> Optional[str]:
         変換後のテキスト、または None（エラー時）
     """
     try:
-        # プロンプトを構築
+        # プロンプトを構築（品質向上のため8個の例を使用）
         system_message = build_system_message()
-        user_message = build_user_message(text, num_examples=5)
+        user_message = build_user_message(text, num_examples=8)
 
         # Groq APIを呼び出し
         chat_completion = client.chat.completions.create(
