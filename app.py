@@ -10,6 +10,7 @@ from groq import Groq
 from typing import Optional
 import config
 from prompt_builder import build_system_message, build_user_message
+from furigana_utils import convert_furigana_to_ruby, format_text_with_ruby_html
 
 # 環境変数を読み込む
 load_dotenv()
@@ -202,22 +203,68 @@ def main():
     with col2:
         st.subheader("✨ やさしい日本語")
 
-        # 変換結果表示エリア
-        result_placeholder = st.empty()
-
         # 初期表示
         if "translated_text" not in st.session_state:
             st.session_state.translated_text = ""
 
         if st.session_state.translated_text:
-            result_placeholder.text_area(
-                "変換結果",
-                value=st.session_state.translated_text,
-                height=300,
-                key="output_text"
-            )
+            # 振り仮名付きHTML表示
+            ruby_html = format_text_with_ruby_html(st.session_state.translated_text)
+            st.markdown(ruby_html, unsafe_allow_html=True)
+
+            # ダウンロードボタン
+            st.divider()
+            download_cols = st.columns(2)
+
+            with download_cols[0]:
+                # カッコ版のダウンロード
+                st.download_button(
+                    label="📥 カッコ版をダウンロード",
+                    data=st.session_state.translated_text,
+                    file_name="yasashii_nihongo.txt",
+                    mime="text/plain",
+                    use_container_width=True
+                )
+
+            with download_cols[1]:
+                # HTMLルビ版のダウンロード
+                ruby_html_download = convert_furigana_to_ruby(st.session_state.translated_text)
+                html_content = f"""<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>やさしい日本語</title>
+    <style>
+        body {{
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 2.0;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }}
+        ruby {{
+            ruby-position: over;
+        }}
+        rt {{
+            font-size: 0.6em;
+        }}
+    </style>
+</head>
+<body>
+    <h1>やさしい日本語</h1>
+    <p>{ruby_html_download.replace(chr(10), '<br>')}</p>
+</body>
+</html>"""
+                st.download_button(
+                    label="📥 HTML版をダウンロード",
+                    data=html_content,
+                    file_name="yasashii_nihongo.html",
+                    mime="text/html",
+                    use_container_width=True
+                )
         else:
-            result_placeholder.info("👈 左側でテキストを入力し、変換ボタンをクリックしてください")
+            st.info("👈 左側でテキストを入力し、変換ボタンをクリックしてください")
 
     # 変換処理
     if convert_button:
