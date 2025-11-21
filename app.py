@@ -141,7 +141,9 @@ def translate_to_yasashii(text: str, client: Groq) -> Optional[str]:
 
     Args:
         text: 変換対象のテキスト
-        client: GroqクライアントReturns:
+        client: Groqクライアント
+
+    Returns:
         変換後のテキスト、または None（エラー時）
     """
     try:
