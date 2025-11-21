@@ -5,8 +5,8 @@
 model:
   # 出力モデル（最適化先のLlamaモデル）
   output_model: "meta-llama/llama-3.3-70b-instruct"
-  # 入力モデル（現在のプロンプトが対象としているモデル）
-  input_model: "anthropic/claude-3-sonnet"  # 文化庁ガイドラインに基づいた一般的なプロンプト
+  # 入力モデル（このプロンプトが元々設計されたモデル。実際のアプリケーションで使用するモデルと異なる場合があります。）
+  input_model: "anthropic/claude-3-sonnet"  # 文化庁ガイドラインに基づいた一般的なプロンプト。ここでは元の設計対象モデルを明示しています。
 
   # 推論プロバイダー設定
   provider: "openrouter"  # OpenRouterを使用してGroq経由でLlamaにアクセス
