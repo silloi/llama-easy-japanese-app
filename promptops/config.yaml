@@ -22,8 +22,8 @@ dataset:
   format: "standard"  # question-answer形式
 
   # データセット分割
-  train_split: 0.8  # 12例を訓練に使用
-  eval_split: 0.2   # 3例を評価に使用
+  train_split: 0.8  # データセットの80%を訓練に使用
+  eval_split: 0.2   # データセットの20%を評価に使用
 
 # プロンプト設定
 prompt:
