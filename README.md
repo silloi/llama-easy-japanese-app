@@ -82,7 +82,6 @@ uv run streamlit run app.py
 llama-easy-japanese-app/
 ├── app.py                  # Streamlitメインアプリ
 ├── prompt_builder.py       # プロンプト生成ロジック
-├── furigana_utils.py       # 振り仮名変換ユーティリティ
 ├── config.py              # 設定・Few-shot examples
 ├── requirements.txt       # 依存パッケージ
 ├── README.md             # このファイル
