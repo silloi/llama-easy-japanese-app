@@ -11,9 +11,58 @@ from typing import Optional
 import config
 from prompt_builder import build_system_message, build_user_message
 from furigana_utils import convert_furigana_to_ruby, format_text_with_ruby_html
+import streamlit.components.v1 as components
 
 # 環境変数を読み込む
 load_dotenv()
+
+
+def create_copy_button(text: str, button_id: str, button_label: str = "📋 コピー"):
+    """
+    クリップボードにコピーするボタンを作成
+
+    Args:
+        text: コピーするテキスト
+        button_id: ボタンの一意なID
+        button_label: ボタンのラベル
+    """
+    # JavaScriptでエスケープ処理
+    escaped_text = text.replace("\\", "\\\\").replace("`", "\\`").replace("$", "\\$")
+
+    button_html = f"""
+    <button id="{button_id}" style="
+        width: 100%;
+        padding: 0.5rem;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    " onclick="copyToClipboard_{button_id}()">
+        {button_label}
+    </button>
+    <script>
+    function copyToClipboard_{button_id}() {{
+        const text = `{escaped_text}`;
+        navigator.clipboard.writeText(text).then(function() {{
+            const btn = document.getElementById('{button_id}');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ コピーしました！';
+            btn.style.backgroundColor = '#2196F3';
+            setTimeout(function() {{
+                btn.innerHTML = originalText;
+                btn.style.backgroundColor = '#4CAF50';
+            }}, 2000);
+        }}, function(err) {{
+            alert('コピーに失敗しました: ' + err);
+        }});
+    }}
+    </script>
+    """
+    components.html(button_html, height=50)
 
 
 # ページ設定
@@ -222,24 +271,39 @@ def main():
             ruby_html = format_text_with_ruby_html(st.session_state.translated_text)
             st.markdown(ruby_html, unsafe_allow_html=True)
 
-            # ダウンロードボタン
+            # ダウンロード・コピーボタン
             st.divider()
-            download_cols = st.columns(2)
 
-            with download_cols[0]:
+            # カッコ版セクション
+            st.markdown("**📄 テキスト版（カッコ付き振り仮名）**")
+            text_cols = st.columns(2)
+
+            with text_cols[0]:
                 # カッコ版のダウンロード
                 st.download_button(
-                    label="📥 カッコ版をダウンロード",
+                    label="📥 ダウンロード",
                     data=st.session_state.translated_text,
                     file_name="yasashii_nihongo.txt",
                     mime="text/plain",
                     use_container_width=True
                 )
 
-            with download_cols[1]:
-                # HTMLルビ版のダウンロード
-                ruby_html_download = convert_furigana_to_ruby(st.session_state.translated_text)
-                html_content = f"""<!DOCTYPE html>
+            with text_cols[1]:
+                # カッコ版のコピー
+                create_copy_button(
+                    text=st.session_state.translated_text,
+                    button_id="copy_text",
+                    button_label="📋 コピー"
+                )
+
+            st.divider()
+
+            # HTML版セクション
+            st.markdown("**🏷️ HTML版（ルビタグ）**")
+            html_cols = st.columns(2)
+
+            ruby_html_download = convert_furigana_to_ruby(st.session_state.translated_text)
+            html_content = f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -266,12 +330,23 @@ def main():
     <p>{ruby_html_download.replace(chr(10), '<br>')}</p>
 </body>
 </html>"""
+
+            with html_cols[0]:
+                # HTML版のダウンロード
                 st.download_button(
-                    label="📥 HTML版をダウンロード",
+                    label="📥 ダウンロード",
                     data=html_content,
                     file_name="yasashii_nihongo.html",
                     mime="text/html",
                     use_container_width=True
+                )
+
+            with html_cols[1]:
+                # HTML版のコピー
+                create_copy_button(
+                    text=ruby_html_download,
+                    button_id="copy_html",
+                    button_label="📋 コピー"
                 )
         else:
             st.info("👈 左側でテキストを入力し、変換ボタンをクリックしてください")
