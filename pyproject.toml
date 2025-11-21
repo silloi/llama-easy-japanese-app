@@ -1,7 +1,11 @@
 [project]
 name = "llama-easy-japanese-app"
 version = "0.1.0"
-description = "Add your description here"
+description = "やさしい日本語翻訳ツール - 文化庁ガイドライン準拠のStreamlitアプリ"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "streamlit>=1.28.0",
+    "groq>=0.4.0",
+    "python-dotenv>=1.0.0",
+]
