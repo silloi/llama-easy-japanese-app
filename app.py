@@ -122,9 +122,9 @@ def get_groq_client() -> Optional[Groq]:
     """
     try:
         # 環境変数からAPIキーを取得、なければデモキーを使用
-        api_key = os.getenv("GROQ_API_KEY", config.DEMO_API_KEY)
+        api_key = os.getenv("GROQ_API_KEY")
 
-        if not api_key or api_key == "gsk_YOUR_DEMO_KEY_HERE":
+        if not api_key:
             st.error("⚠️ GROQ_API_KEYが設定されていません。環境変数に設定してください。")
             st.info("💡 Groq APIキーは https://console.groq.com から取得できます。")
             return None
