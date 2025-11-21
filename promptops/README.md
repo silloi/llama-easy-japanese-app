@@ -53,7 +53,7 @@ OPENROUTER_API_KEY=your_openrouter_api_key_here
 
 ## 📊 データセット
 
-`dataset.json`には、15個のFew-shot examplesが含まれています：
+`dataset.json`には、以下のカテゴリのFew-shot examplesが含まれています：
 
 - 行政文書（在留カード、転入届など）
 - 医療情報（発熱、受診手順など）
