@@ -178,27 +178,33 @@ def main():
     with col1:
         st.subheader("📝 通常の日本語")
 
-        # サンプルボタン（テキストエリアの前に配置）
+        # サンプル選択の処理（テキストエリアの前に実行）
+        if "selected_sample" in st.session_state and st.session_state.selected_sample:
+            st.session_state.input_text = st.session_state.selected_sample
+            st.session_state.selected_sample = None
+
+        # session_stateの初期化
+        if "input_text" not in st.session_state:
+            st.session_state.input_text = ""
+
+        # テキスト入力エリア（ラベルなし）
+        input_text = st.text_area(
+            label="入力エリア",
+            height=300,
+            placeholder="ここに変換したい日本語を入力してください...",
+            key="input_text",
+            label_visibility="collapsed"
+        )
+
+        # サンプルボタン（入力フォームの下に配置）
         st.markdown("**📌 サンプルを試す:**")
         sample_cols = st.columns(5)
 
         for idx, (category, sample_text) in enumerate(config.SAMPLE_TEXTS.items()):
             with sample_cols[idx]:
                 if st.button(category, key=f"sample_{category}", use_container_width=True):
-                    st.session_state.input_text = sample_text
+                    st.session_state.selected_sample = sample_text
                     st.rerun()
-
-        # session_stateの初期化
-        if "input_text" not in st.session_state:
-            st.session_state.input_text = ""
-
-        # テキスト入力エリア
-        input_text = st.text_area(
-            "変換したいテキストを入力してください",
-            height=300,
-            placeholder="ここに変換したい日本語を入力してください...",
-            key="input_text"
-        )
 
         # 変換ボタン
         st.divider()
