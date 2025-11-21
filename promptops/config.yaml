@@ -1,0 +1,104 @@
+# PromptOps Configuration for やさしい日本語翻訳ツール
+# This configuration file is used to optimize prompts for Llama models
+
+# モデル設定
+model:
+  # 出力モデル（最適化先のLlamaモデル）
+  output_model: "meta-llama/llama-3.3-70b-instruct"
+  # 入力モデル（このプロンプトが元々設計されたモデル。実際のアプリケーションで使用するモデルと異なる場合があります。）
+  input_model: "anthropic/claude-3-sonnet"  # 文化庁ガイドラインに基づいた一般的なプロンプト。ここでは元の設計対象モデルを明示しています。
+
+  # 推論プロバイダー設定
+  provider: "openrouter"  # OpenRouterを使用してGroq経由でLlamaにアクセス
+
+  # モデルパラメータ
+  temperature: 0.3  # 安定性重視（現在の設定を維持）
+  max_tokens: 1500
+  top_p: 0.9
+
+# データセット設定
+dataset:
+  path: "promptops/dataset.json"
+  format: "standard"  # question-answer形式
+
+  # データセット分割
+  train_split: 0.8  # データセットの80%を訓練に使用
+  eval_split: 0.2   # データセットの20%を評価に使用
+
+# プロンプト設定
+prompt:
+  original_path: "promptops/original_prompt.txt"
+  output_path: "promptops/optimized_prompt.txt"
+
+  # 最適化戦略
+  optimization_strategy:
+    # Llama形式に変換
+    - convert_to_llama_format
+    # Few-shot examplesの最適化
+    - optimize_examples
+    # 指示の明確化
+    - clarify_instructions
+    # 日本語特有の調整
+    - japanese_specific_optimization
+
+# 評価指標
+metrics:
+  # 主要指標: やさしい日本語の品質
+  primary:
+    - name: "exact_match"
+      weight: 0.3
+    - name: "semantic_similarity"
+      weight: 0.4
+    - name: "length_similarity"
+      weight: 0.1
+    - name: "format_compliance"
+      weight: 0.2
+
+  # カスタム指標: 文化庁ガイドライン準拠度
+  custom:
+    - name: "sentence_length"  # 一文の長さ（20-30文字が理想）
+      check: "average_sentence_length_in_range"
+      target_range: [15, 40]
+    - name: "bullet_points"  # 箇条書きの使用
+      check: "contains_bullet_points"
+    - name: "furigana_presence"  # 振り仮名の存在
+      check: "contains_furigana_format"
+      pattern: "\\w+\\([ぁ-ん]+\\)"
+
+# 最適化パラメータ
+optimization:
+  iterations: 3  # 最適化のイテレーション回数
+  batch_size: 5
+
+  # 学習率
+  learning_rate: 0.01
+
+  # 早期停止
+  early_stopping:
+    patience: 2
+    min_improvement: 0.01
+
+# 出力設定
+output:
+  save_comparisons: true  # Before/After比較を保存
+  save_metrics: true      # 評価指標を保存
+  results_dir: "promptops/results"
+
+  # レポート形式
+  report_format: "markdown"
+
+# ロギング
+logging:
+  level: "INFO"
+  save_logs: true
+  log_file: "promptops/optimization.log"
+
+# 実験設定
+experiment:
+  name: "yasashii_nihongo_prompt_optimization"
+  description: "文化庁ガイドライン準拠のやさしい日本語翻訳プロンプトの最適化"
+  tags:
+    - "japanese"
+    - "yasashii-nihongo"
+    - "llama-3.3"
+    - "prompt-optimization"

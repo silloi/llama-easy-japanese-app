@@ -85,8 +85,14 @@ llama-easy-japanese-app/
 ├── config.py              # 設定・Few-shot examples
 ├── requirements.txt       # 依存パッケージ
 ├── README.md             # このファイル
-└── data/                 # データフォルダ
-    └── guideline.pdf     # 文化庁ガイドライン（参考資料）
+├── data/                 # データフォルダ
+│   └── guideline.pdf     # 文化庁ガイドライン（参考資料）
+└── promptops/            # プロンプト最適化
+    ├── README.md         # PromptOps使用方法
+    ├── config.yaml       # PromptOps設定ファイル
+    ├── dataset.json      # Few-shot examples（JSON形式）
+    ├── original_prompt.txt   # 現在のシステムプロンプト
+    └── results/          # 最適化結果（実行後に生成）
 ```
 
 ## 📝 やさしい日本語の主要ルール
@@ -110,6 +116,32 @@ llama-easy-japanese-app/
 - **LLMバックエンド**: Groq API（Llama 3.3 70B Versatile）
 - **言語**: Python 3.11+
 - **ガイドライン**: 文化庁「在留支援のためのやさしい日本語ガイドライン」
+
+## 🔬 プロンプト最適化（PromptOps）
+
+このプロジェクトでは、Meta Llama PromptOpsを使用してシステムプロンプトを最適化できます。PromptOpsは、既存のプロンプトをLlama 3.3モデル向けに自動的に最適化するツールです。
+
+### 主な機能
+
+- **自動プロンプト最適化**: Few-shot examplesを使用してLlama 3.3に最適化
+- **カスタム評価指標**: やさしい日本語特有の品質基準（文の長さ、箇条書き、振り仮名）
+- **Before/After比較**: 最適化前後の性能を定量的に評価
+
+### 使い方
+
+詳細な使用方法は [`promptops/README.md`](./promptops/README.md) をご覧ください。
+
+```bash
+# promptopsディレクトリに移動
+cd promptops
+
+# PromptOpsを実行
+prompt-ops migrate --config config.yaml
+```
+
+最適化されたプロンプトは `promptops/optimized_prompt.txt` に出力され、品質が向上した場合は `config.py` の `SYSTEM_PROMPT` に適用できます。
+
+**注意**: PromptOpsは実験的な機能です。最適化結果は必ずレビューし、実際のユースケースでテストしてから適用してください。
 
 ## 📊 変換例
 
@@ -140,7 +172,8 @@ llama-easy-japanese-app/
 
 ## 🎯 今後の展望
 
-- [ ] ふりがな自動付与機能
+- [x] ふりがな自動付与機能（JLPT N3-N2レベル以上の漢字）
+- [x] プロンプト最適化機能（PromptOps統合）
 - [ ] PDFファイルからの一括変換
 - [ ] 多言語翻訳機能
 - [ ] 音声読み上げ機能
