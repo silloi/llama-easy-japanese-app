@@ -221,7 +221,7 @@ def main():
             """)
 
         st.divider()
-        st.caption("Powered by Groq + Llama 3.1")
+        st.caption("Powered by Groq + Llama 3.3")
 
     # メインコンテンツ
     col1, col2 = st.columns([1, 1])
