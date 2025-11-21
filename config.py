@@ -3,8 +3,6 @@
 文化庁「在留支援のためのやさしい日本語ガイドライン」に準拠
 """
 
-# Groq APIデモ用キー（実際の運用では環境変数から取得）
-DEMO_API_KEY = "gsk_YOUR_DEMO_KEY_HERE"  # ハッカソン用デモキー
 
 # Groq API設定
 MODEL_NAME = "llama-3.3-70b-versatile"
